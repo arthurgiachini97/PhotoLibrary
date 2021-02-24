@@ -17,6 +17,8 @@
 		62C1D9D325E6A51D00C3A312 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 62C1D9D225E6A51D00C3A312 /* Alamofire */; };
 		62C1D9D825E6A5AF00C3A312 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 62C1D9D725E6A5AF00C3A312 /* RxSwift */; };
 		62C1D9DA25E6A5AF00C3A312 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 62C1D9D925E6A5AF00C3A312 /* RxCocoa */; };
+		62C1D9DC25E6C17200C3A312 /* PhotoLibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C1D9DB25E6C17200C3A312 /* PhotoLibraryService.swift */; };
+		62C1D9DE25E6C57300C3A312 /* PhotoLibraryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C1D9DD25E6C57300C3A312 /* PhotoLibraryModels.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,8 @@
 		62C1D9C225E695EF00C3A312 /* PhotoLibraryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotoLibraryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		62C1D9C625E695EF00C3A312 /* PhotoLibraryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryTests.swift; sourceTree = "<group>"; };
 		62C1D9C825E695EF00C3A312 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		62C1D9DB25E6C17200C3A312 /* PhotoLibraryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryService.swift; sourceTree = "<group>"; };
+		62C1D9DD25E6C57300C3A312 /* PhotoLibraryModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +96,8 @@
 				62C1D9B825E695EF00C3A312 /* Assets.xcassets */,
 				62C1D9BA25E695EF00C3A312 /* LaunchScreen.storyboard */,
 				62C1D9BD25E695EF00C3A312 /* Info.plist */,
+				62C1D9DB25E6C17200C3A312 /* PhotoLibraryService.swift */,
+				62C1D9DD25E6C57300C3A312 /* PhotoLibraryModels.swift */,
 			);
 			path = PhotoLibrary;
 			sourceTree = "<group>";
@@ -215,7 +221,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62C1D9DC25E6C17200C3A312 /* PhotoLibraryService.swift in Sources */,
 				62C1D9B425E695EC00C3A312 /* ViewController.swift in Sources */,
+				62C1D9DE25E6C57300C3A312 /* PhotoLibraryModels.swift in Sources */,
 				62C1D9B025E695EC00C3A312 /* AppDelegate.swift in Sources */,
 				62C1D9B225E695EC00C3A312 /* SceneDelegate.swift in Sources */,
 			);
