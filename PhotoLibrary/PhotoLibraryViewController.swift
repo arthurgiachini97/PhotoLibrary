@@ -23,7 +23,7 @@ class PhotoLibraryViewController: UIViewController {
     
     // MARK: Initializers
     
-    init(viewModel: PhotoLibraryViewModelProtocol = PhotoLibraryViewModel()) {
+    init(with viewModel: PhotoLibraryViewModelProtocol = PhotoLibraryViewModel()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -54,6 +54,11 @@ class PhotoLibraryViewController: UIViewController {
     // MARK: Private methods
     
     private func setupBindings() {
+        viewModel.title.drive(onNext: { [weak self] title in
+            self?.title = title
+        })
+            .disposed(by: disposeBag)
+        
         viewModel.cellViewModels
             .drive(customView.collectionView.rx.items(cellIdentifier: PhotoLibraryCollectionViewCell.description(), cellType: PhotoLibraryCollectionViewCell.self)) { (row, viewModel, cell) in
                 cell.configure(viewModel: viewModel)

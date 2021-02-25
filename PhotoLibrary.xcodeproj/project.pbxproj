@@ -22,6 +22,7 @@
 		62C1D9E625E72A7D00C3A312 /* PhotoLibraryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C1D9E525E72A7D00C3A312 /* PhotoLibraryCollectionViewCell.swift */; };
 		62C1D9E825E7F49D00C3A312 /* PhotoLibraryCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C1D9E725E7F49D00C3A312 /* PhotoLibraryCollectionViewCellViewModel.swift */; };
 		62C1D9EA25E809D800C3A312 /* PhotoLibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C1D9E925E809D800C3A312 /* PhotoLibraryViewModel.swift */; };
+		62C1D9EE25E8598200C3A312 /* PhotoLibraryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C1D9ED25E8598200C3A312 /* PhotoLibraryCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		62C1D9E525E72A7D00C3A312 /* PhotoLibraryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCollectionViewCell.swift; sourceTree = "<group>"; };
 		62C1D9E725E7F49D00C3A312 /* PhotoLibraryCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		62C1D9E925E809D800C3A312 /* PhotoLibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryViewModel.swift; sourceTree = "<group>"; };
+		62C1D9ED25E8598200C3A312 /* PhotoLibraryCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 		62C1D9AE25E695EC00C3A312 /* PhotoLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				62C1D9ED25E8598200C3A312 /* PhotoLibraryCoordinator.swift */,
 				62C1D9E125E7298000C3A312 /* PhotoLibraryView.swift */,
 				62C1D9E325E7298900C3A312 /* PhotoLibraryViewController.swift */,
 				62C1D9E925E809D800C3A312 /* PhotoLibraryViewModel.swift */,
@@ -230,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				62C1D9E625E72A7D00C3A312 /* PhotoLibraryCollectionViewCell.swift in Sources */,
+				62C1D9EE25E8598200C3A312 /* PhotoLibraryCoordinator.swift in Sources */,
 				62C1D9DC25E6C17200C3A312 /* PhotoLibraryService.swift in Sources */,
 				62C1D9E825E7F49D00C3A312 /* PhotoLibraryCollectionViewCellViewModel.swift in Sources */,
 				62C1D9EA25E809D800C3A312 /* PhotoLibraryViewModel.swift in Sources */,

@@ -12,10 +12,13 @@ import RxCocoa
 
 protocol PhotoLibraryViewModelProtocol {
     var loadData: PublishSubject<Void> { get }
+    var title: Driver<String> { get }
     var cellViewModels: Driver<[PhotoLibraryCollectionViewCellViewModelProtocol]> { get }
 }
 
 class PhotoLibraryViewModel: PhotoLibraryViewModelProtocol {
+    
+    let title = Driver.just("Photo Library")
     
     let loadData = PublishSubject<Void>()
     
