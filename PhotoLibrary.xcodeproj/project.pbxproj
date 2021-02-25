@@ -21,6 +21,7 @@
 		62C1D9E225E7298000C3A312 /* PhotoLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C1D9E125E7298000C3A312 /* PhotoLibraryView.swift */; };
 		62C1D9E425E7298900C3A312 /* PhotoLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C1D9E325E7298900C3A312 /* PhotoLibraryViewController.swift */; };
 		62C1D9E625E72A7D00C3A312 /* PhotoLibraryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C1D9E525E72A7D00C3A312 /* PhotoLibraryCollectionViewCell.swift */; };
+		62C1D9E825E7F49D00C3A312 /* PhotoLibraryCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C1D9E725E7F49D00C3A312 /* PhotoLibraryCollectionViewCellViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		62C1D9E125E7298000C3A312 /* PhotoLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryView.swift; sourceTree = "<group>"; };
 		62C1D9E325E7298900C3A312 /* PhotoLibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryViewController.swift; sourceTree = "<group>"; };
 		62C1D9E525E72A7D00C3A312 /* PhotoLibraryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCollectionViewCell.swift; sourceTree = "<group>"; };
+		62C1D9E725E7F49D00C3A312 /* PhotoLibraryCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 				62C1D9B125E695EC00C3A312 /* SceneDelegate.swift */,
 				62C1D9E125E7298000C3A312 /* PhotoLibraryView.swift */,
 				62C1D9E525E72A7D00C3A312 /* PhotoLibraryCollectionViewCell.swift */,
+				62C1D9E725E7F49D00C3A312 /* PhotoLibraryCollectionViewCellViewModel.swift */,
 				62C1D9E325E7298900C3A312 /* PhotoLibraryViewController.swift */,
 				62C1D9DB25E6C17200C3A312 /* PhotoLibraryService.swift */,
 				62C1D9DD25E6C57300C3A312 /* PhotoLibraryModels.swift */,
@@ -229,6 +232,7 @@
 			files = (
 				62C1D9E625E72A7D00C3A312 /* PhotoLibraryCollectionViewCell.swift in Sources */,
 				62C1D9DC25E6C17200C3A312 /* PhotoLibraryService.swift in Sources */,
+				62C1D9E825E7F49D00C3A312 /* PhotoLibraryCollectionViewCellViewModel.swift in Sources */,
 				62C1D9DE25E6C57300C3A312 /* PhotoLibraryModels.swift in Sources */,
 				62C1D9E225E7298000C3A312 /* PhotoLibraryView.swift in Sources */,
 				62C1D9B025E695EC00C3A312 /* AppDelegate.swift in Sources */,
