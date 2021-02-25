@@ -26,7 +26,7 @@ final class PhotoLibraryView: UIView {
         flowLayout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .red
+        collectionView.backgroundColor = .white
         collectionView.register(PhotoLibraryCollectionViewCell.self, forCellWithReuseIdentifier: PhotoLibraryCollectionViewCell.description())
         return collectionView
     }()

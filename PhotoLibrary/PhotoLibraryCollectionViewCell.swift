@@ -8,13 +8,21 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
 class PhotoLibraryCollectionViewCell: UICollectionViewCell {
     
-    let photoImageView: UIImageView = {
+    // MARK: Private constants
+    
+    private let photoImageView: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UIImageView())
+    
+    private let disposeBag = DisposeBag()
+    
+    // MARK: Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,6 +31,15 @@ class PhotoLibraryCollectionViewCell: UICollectionViewCell {
         
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: Internal functions
+    
+    func configure(viewModel: PhotoLibraryCollectionViewCellViewModelProtocol) {
+        viewModel.downloadedImage.drive(onNext: { [photoImageView] image in
+            photoImageView.image = image
+        })
+        .disposed(by: disposeBag)
     }
 
     // MARK: Private functions
@@ -37,5 +54,4 @@ class PhotoLibraryCollectionViewCell: UICollectionViewCell {
             photoImageView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
-    
 }

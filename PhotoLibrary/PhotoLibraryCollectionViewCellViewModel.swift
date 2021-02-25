@@ -19,10 +19,13 @@ class PhotoLibraryCollectionViewCellViewModel: PhotoLibraryCollectionViewCellVie
     
     let downloadedImage: Driver<UIImage>
     
-    init(service: PhotoLibraryServiceProtocol = PhotoLibraryService(), url: String) {
+    init(service: PhotoLibraryServiceProtocol = PhotoLibraryService(), photoId: String) {
         
-        downloadedImage = service
-            .downloadImage(url: url)
+        let url = service
+            .getPhotosURL(photoId: photoId)
+        
+        downloadedImage = url
+            .flatMap( service.downloadImage )
             .asDriver(onErrorRecover: { _ in return Driver.empty() })
     }
 }
