@@ -49,7 +49,7 @@ class PhotoLibraryViewModel: PhotoLibraryViewModelProtocol {
             .flatMap { tags -> Driver<PhotoList> in
                 let tagsArray = tags.trimmingCharacters(in: .whitespaces).components(separatedBy: .whitespaces)
                 let tagsFormatted = tagsArray.joined(separator: ",")
-                print(tagsFormatted)
+                
                 return service.getPhotoList(tags: tagsFormatted)
                     .do(onNext: { (_) in
                         _state.onNext(.data)

@@ -74,14 +74,17 @@ class PhotoLibraryViewController: UIViewController {
         customView.collectionView.rx.setDelegate(self).disposed(by: disposeBag)
         
         viewModel.state
-            .drive(onNext: { (state) in
+            .do(onSubscribe: { [customView] in customView.showData(true) })
+            .drive(onNext: { [customView] (state) in
                 switch state {
                 case .data:
                     print("data")
+                    customView.showData(true)
                 case .loading:
                     print("loading")
                 case .error:
                     print("error")
+                    customView.showData(false)
                 }
             })
             .disposed(by: disposeBag)

@@ -23,6 +23,7 @@
 		62C1D9E825E7F49D00C3A312 /* PhotoLibraryCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C1D9E725E7F49D00C3A312 /* PhotoLibraryCollectionViewCellViewModel.swift */; };
 		62C1D9EA25E809D800C3A312 /* PhotoLibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C1D9E925E809D800C3A312 /* PhotoLibraryViewModel.swift */; };
 		62C1D9EE25E8598200C3A312 /* PhotoLibraryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C1D9ED25E8598200C3A312 /* PhotoLibraryCoordinator.swift */; };
+		62C1D9F025E9624000C3A312 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C1D9EF25E9624000C3A312 /* ErrorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		62C1D9E725E7F49D00C3A312 /* PhotoLibraryCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		62C1D9E925E809D800C3A312 /* PhotoLibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryViewModel.swift; sourceTree = "<group>"; };
 		62C1D9ED25E8598200C3A312 /* PhotoLibraryCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCoordinator.swift; sourceTree = "<group>"; };
+		62C1D9EF25E9624000C3A312 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 				62C1D9DD25E6C57300C3A312 /* PhotoLibraryModels.swift */,
 				62C1D9E525E72A7D00C3A312 /* PhotoLibraryCollectionViewCell.swift */,
 				62C1D9E725E7F49D00C3A312 /* PhotoLibraryCollectionViewCellViewModel.swift */,
+				62C1D9EF25E9624000C3A312 /* ErrorView.swift */,
 				62C1D9AF25E695EC00C3A312 /* AppDelegate.swift */,
 				62C1D9B125E695EC00C3A312 /* SceneDelegate.swift */,
 				62C1D9BD25E695EF00C3A312 /* Info.plist */,
@@ -242,6 +245,7 @@
 				62C1D9B025E695EC00C3A312 /* AppDelegate.swift in Sources */,
 				62C1D9E425E7298900C3A312 /* PhotoLibraryViewController.swift in Sources */,
 				62C1D9B225E695EC00C3A312 /* SceneDelegate.swift in Sources */,
+				62C1D9F025E9624000C3A312 /* ErrorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

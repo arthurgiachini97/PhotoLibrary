@@ -35,6 +35,8 @@ final class PhotoLibraryView: UIView {
         return collectionView
     }()
     
+    private let errorView = ErrorView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -49,6 +51,7 @@ final class PhotoLibraryView: UIView {
     private func addSubviews() {
         addSubview(searchBar)
         addSubview(collectionView)
+        addSubview(errorView)
     }
     
     private func setupConstraints() {
@@ -60,7 +63,19 @@ final class PhotoLibraryView: UIView {
             collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 5.0),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5.0),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5.0),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5.0)
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5.0),
+            
+            errorView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            errorView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            errorView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            errorView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+    }
+    
+    // MARK: Internal methods
+    
+    func showData(_ showData: Bool) {
+        collectionView.isHidden = !showData
+        errorView.isHidden = showData
     }
 }
