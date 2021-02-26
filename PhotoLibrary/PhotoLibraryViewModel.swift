@@ -10,28 +10,57 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+// MARK: - Enum
+
+enum PhotoLibraryViewModelState {
+    case data, loading, error
+}
+
+// MARK: - Protocol
+
 protocol PhotoLibraryViewModelProtocol {
     var loadData: PublishSubject<Void> { get }
-    var tag: PublishSubject<String?> { get }
+    var tags: PublishSubject<String?> { get }
     var title: Driver<String> { get }
     var cellViewModels: Driver<[PhotoLibraryCollectionViewCellViewModelProtocol]> { get }
+    var state: Driver<PhotoLibraryViewModelState> { get }
 }
+
+// MARK: - Class
 
 class PhotoLibraryViewModel: PhotoLibraryViewModelProtocol {
     
     let loadData = PublishSubject<Void>()
     
-    var tag = PublishSubject<String?>()
+    var tags = PublishSubject<String?>()
     
     let title = Driver.just("Photo Library")
     
     let cellViewModels: Driver<[PhotoLibraryCollectionViewCellViewModelProtocol]>
     
+    let state: Driver<PhotoLibraryViewModelState>
+    
     init(service: PhotoLibraryServiceProtocol = PhotoLibraryService()) {
-        let list = tag.compactMap { $0 }
-            .flatMap { tag -> Observable<PhotoList> in
-                service.getPhotoList(tag: tag)
+        
+        let _state = PublishSubject<PhotoLibraryViewModelState>()
+        state = _state.asDriver(onErrorRecover: { _ in return Driver.empty() })
+        
+        let list = tags.compactMap { $0 }
+            .flatMap { tags -> Driver<PhotoList> in
+                let tagsArray = tags.trimmingCharacters(in: .whitespaces).components(separatedBy: .whitespaces)
+                let tagsFormatted = tagsArray.joined(separator: ",")
+                print(tagsFormatted)
+                return service.getPhotoList(tags: tagsFormatted)
+                    .do(onNext: { (_) in
+                        _state.onNext(.data)
+                    }, onError: { (_) in
+                        _state.onNext(.error)
+                    }, onSubscribe: {
+                        _state.onNext(.loading)
+                    })
+                    .asDriver(onErrorRecover: { _ in return Driver.empty() })
         }
+        .asDriver(onErrorRecover: { _ in return Driver.empty() })
         
         let photosIds = list.map { list -> [String] in
             var photoIdsList = [String]()

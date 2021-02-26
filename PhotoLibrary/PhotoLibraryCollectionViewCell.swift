@@ -45,6 +45,8 @@ class PhotoLibraryCollectionViewCell: UICollectionViewCell {
     // MARK: Private functions
 
     private func setupViews() {
+        layer.masksToBounds =  true
+        layer.cornerRadius = 7.5
         addSubview(photoImageView)
         
         NSLayoutConstraint.activate([

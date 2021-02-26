@@ -66,12 +66,25 @@ class PhotoLibraryViewController: UIViewController {
         .disposed(by: disposeBag)
         
         customView.searchBar.rx.searchButtonClicked.subscribe(onNext: { [viewModel, customView, view] (_) in
-            viewModel.tag.onNext(customView.searchBar.text)
+            viewModel.tags.onNext(customView.searchBar.text)
             view?.endEditing(true)
         })
             .disposed(by: disposeBag)
         
         customView.collectionView.rx.setDelegate(self).disposed(by: disposeBag)
+        
+        viewModel.state
+            .drive(onNext: { (state) in
+                switch state {
+                case .data:
+                    print("data")
+                case .loading:
+                    print("loading")
+                case .error:
+                    print("error")
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
 
