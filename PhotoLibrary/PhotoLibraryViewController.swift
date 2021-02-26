@@ -78,12 +78,12 @@ class PhotoLibraryViewController: UIViewController {
             .drive(onNext: { [customView] (state) in
                 switch state {
                 case .data:
-                    print("data")
+                    customView.isLoading(false)
                     customView.showData(true)
                 case .loading:
-                    print("loading")
+                    customView.isLoading(true)
                 case .error:
-                    print("error")
+                    customView.isLoading(false)
                     customView.showData(false)
                 }
             })

@@ -37,6 +37,12 @@ final class PhotoLibraryView: UIView {
     
     private let errorView = ErrorView()
     
+    private let loadingIndicator: UIActivityIndicatorView = {
+        let loadingIndicator = UIActivityIndicatorView(style: .large)
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        return loadingIndicator
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -52,6 +58,7 @@ final class PhotoLibraryView: UIView {
         addSubview(searchBar)
         addSubview(collectionView)
         addSubview(errorView)
+        addSubview(loadingIndicator)
     }
     
     private func setupConstraints() {
@@ -68,7 +75,10 @@ final class PhotoLibraryView: UIView {
             errorView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
             errorView.leadingAnchor.constraint(equalTo: leadingAnchor),
             errorView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            errorView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            errorView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            loadingIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
     
@@ -77,5 +87,17 @@ final class PhotoLibraryView: UIView {
     func showData(_ showData: Bool) {
         collectionView.isHidden = !showData
         errorView.isHidden = showData
+    }
+    
+    func isLoading(_ isLoading: Bool) {
+        if isLoading {
+            loadingIndicator.isHidden = !isLoading
+            loadingIndicator.startAnimating()
+            collectionView.isHidden = isLoading
+            errorView.isHidden = isLoading
+        } else {
+            loadingIndicator.isHidden = isLoading
+            loadingIndicator.stopAnimating()
+        }
     }
 }
