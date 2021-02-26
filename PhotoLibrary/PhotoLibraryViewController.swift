@@ -47,7 +47,7 @@ class PhotoLibraryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = .white
         setupBindings()
     }
     
@@ -64,5 +64,19 @@ class PhotoLibraryViewController: UIViewController {
                 cell.configure(viewModel: viewModel)
         }
         .disposed(by: disposeBag)
+        
+        customView.searchBar.rx.searchButtonClicked.subscribe(onNext: { [viewModel, customView, view] (_) in
+            viewModel.tag.onNext(customView.searchBar.text)
+            view?.endEditing(true)
+        })
+            .disposed(by: disposeBag)
+        
+        customView.collectionView.rx.setDelegate(self).disposed(by: disposeBag)
+    }
+}
+
+extension PhotoLibraryViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: (collectionView.bounds.width/2) - 2.5, height: 150)
     }
 }

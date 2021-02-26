@@ -12,21 +12,25 @@ import RxCocoa
 
 protocol PhotoLibraryViewModelProtocol {
     var loadData: PublishSubject<Void> { get }
+    var tag: PublishSubject<String?> { get }
     var title: Driver<String> { get }
     var cellViewModels: Driver<[PhotoLibraryCollectionViewCellViewModelProtocol]> { get }
 }
 
 class PhotoLibraryViewModel: PhotoLibraryViewModelProtocol {
     
-    let title = Driver.just("Photo Library")
-    
     let loadData = PublishSubject<Void>()
+    
+    var tag = PublishSubject<String?>()
+    
+    let title = Driver.just("Photo Library")
     
     let cellViewModels: Driver<[PhotoLibraryCollectionViewCellViewModelProtocol]>
     
     init(service: PhotoLibraryServiceProtocol = PhotoLibraryService()) {
-        let list = loadData.flatMap { _ -> Observable<PhotoList> in
-            service.getPhotoList(tag: "kitten")
+        let list = tag.compactMap { $0 }
+            .flatMap { tag -> Observable<PhotoList> in
+                service.getPhotoList(tag: tag)
         }
         
         let photosIds = list.map { list -> [String] in
