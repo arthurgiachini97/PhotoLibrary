@@ -20,6 +20,12 @@ class PhotoLibraryCollectionViewCell: UICollectionViewCell {
         return $0
     }(UIImageView())
     
+    private let loadingIndicator: UIActivityIndicatorView = {
+        let loadingIndicator = UIActivityIndicatorView(style: .medium)
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        return loadingIndicator
+    }()
+    
     private let disposeBag = DisposeBag()
     
     // MARK: Initializers
@@ -36,10 +42,20 @@ class PhotoLibraryCollectionViewCell: UICollectionViewCell {
     // MARK: Internal functions
     
     func configure(viewModel: PhotoLibraryCollectionViewCellViewModelProtocol) {
-        viewModel.downloadedImage.drive(onNext: { [photoImageView] image in
+        viewModel.downloadedImage.drive(onNext: { [photoImageView, loadingIndicator] image in
+            loadingIndicator.stopAnimating()
+            photoImageView.isHidden = false
             photoImageView.image = image
         })
         .disposed(by: disposeBag)
+        
+        viewModel.isLoading
+            .do(onSubscribe: { [loadingIndicator, photoImageView] in
+                photoImageView.isHidden = true
+                loadingIndicator.startAnimating()
+            })
+            .drive(with: loadingIndicator)
+            .disposed(by: disposeBag)
     }
 
     // MARK: Private functions
@@ -48,12 +64,16 @@ class PhotoLibraryCollectionViewCell: UICollectionViewCell {
         layer.masksToBounds =  true
         layer.cornerRadius = 7.5
         addSubview(photoImageView)
+        addSubview(loadingIndicator)
         
         NSLayoutConstraint.activate([
             photoImageView.topAnchor.constraint(equalTo: topAnchor),
             photoImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             photoImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            photoImageView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            photoImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            loadingIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 }

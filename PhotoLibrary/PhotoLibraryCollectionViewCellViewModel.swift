@@ -12,20 +12,31 @@ import RxSwift
 import RxCocoa
 
 protocol PhotoLibraryCollectionViewCellViewModelProtocol {
+    var isLoading: Driver<Bool> { get }
     var downloadedImage: Driver<UIImage> { get }
 }
 
 class PhotoLibraryCollectionViewCellViewModel: PhotoLibraryCollectionViewCellViewModelProtocol {
     
+    let isLoading: Driver<Bool>
     let downloadedImage: Driver<UIImage>
     
     init(service: PhotoLibraryServiceProtocol = PhotoLibraryService(), photoId: String) {
         
+        let _isLoading = PublishSubject<Bool>()
+        isLoading = _isLoading.asDriver(onErrorRecover: { _ in return Driver.empty() })
+        
         let url = service
             .getPhotosURL(photoId: photoId)
+            .do(onSubscribe: {
+                _isLoading.onNext(true)
+            })
         
         downloadedImage = url
             .flatMap( service.downloadImage )
+            .do(onNext: { (_) in
+                _isLoading.onNext(false)
+            })
             .asDriver(onErrorRecover: { _ in return Driver.empty() })
     }
 }
