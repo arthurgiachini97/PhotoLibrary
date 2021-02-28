@@ -11,6 +11,14 @@ import UIKit
 
 final class PhotoLibraryView: UIView {
     
+    //MARK: Private constants
+    
+    private let loadingIndicator: UIActivityIndicatorView = {
+        let loadingIndicator = UIActivityIndicatorView(style: .large)
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        return loadingIndicator
+    }()
+    
     //MARK: Internal variables
     
     lazy var searchBar: UISearchBar = {
@@ -35,13 +43,7 @@ final class PhotoLibraryView: UIView {
         return collectionView
     }()
     
-    private let errorView = ErrorView()
-    
-    private let loadingIndicator: UIActivityIndicatorView = {
-        let loadingIndicator = UIActivityIndicatorView(style: .large)
-        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
-        return loadingIndicator
-    }()
+    let errorView = ErrorView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

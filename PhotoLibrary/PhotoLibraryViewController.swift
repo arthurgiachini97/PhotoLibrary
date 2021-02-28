@@ -65,12 +65,6 @@ class PhotoLibraryViewController: UIViewController {
         }
         .disposed(by: disposeBag)
         
-        customView.searchBar.rx.searchButtonClicked.subscribe(onNext: { [viewModel, customView, view] (_) in
-            viewModel.tags.onNext(customView.searchBar.text)
-            view?.endEditing(true)
-        })
-            .disposed(by: disposeBag)
-        
         customView.collectionView.rx.setDelegate(self).disposed(by: disposeBag)
         
         viewModel.state
@@ -86,6 +80,14 @@ class PhotoLibraryViewController: UIViewController {
                     customView.isLoading(false)
                     customView.showData(false)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        Observable.merge(customView.searchBar.rx.searchButtonClicked.map {()},
+                         customView.errorView.tryAgainButton.rx.tap.map {()})
+            .subscribe(onNext: { [viewModel, customView, view] _ in
+                viewModel.tags.onNext(customView.searchBar.text)
+                view?.endEditing(true)
             })
             .disposed(by: disposeBag)
     }

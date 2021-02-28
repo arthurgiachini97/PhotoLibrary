@@ -31,7 +31,12 @@ final class ErrorView: UIView {
         return errorLabel
     }()
     
-    private let tryAgainButton: UIButton = {
+    private let height = UIScreen.main.bounds.height
+    private let width = UIScreen.main.bounds.width
+    
+    // MARK: Internal constants
+    
+    let tryAgainButton: UIButton = {
         let tryAgainButton = UIButton()
         tryAgainButton.translatesAutoresizingMaskIntoConstraints = false
         tryAgainButton.backgroundColor = #colorLiteral(red: 0.1328099966, green: 0.1328397393, blue: 0.1328060925, alpha: 0.6010098987)
@@ -41,9 +46,6 @@ final class ErrorView: UIView {
         tryAgainButton.setTitle("Try again", for: .normal)
         return tryAgainButton
     }()
-    
-    private let height = UIScreen.main.bounds.height
-    private let width = UIScreen.main.bounds.width
     
     // MARK: Initializers
     

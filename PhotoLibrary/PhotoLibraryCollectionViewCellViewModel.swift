@@ -31,12 +31,15 @@ class PhotoLibraryCollectionViewCellViewModel: PhotoLibraryCollectionViewCellVie
             .do(onSubscribe: {
                 _isLoading.onNext(true)
             })
+        .asDriver(onErrorRecover: { _ in return Driver.empty() })
         
         downloadedImage = url
-            .flatMap( service.downloadImage )
-            .do(onNext: { (_) in
-                _isLoading.onNext(false)
+            .flatMap({ (url) -> Driver<UIImage> in
+                service
+                    .downloadImage(url: url)
+                    .asDriver(onErrorRecover: { _ in return Driver.empty() })
             })
+            .do(onNext: { (_) in _isLoading.onNext(false) })
             .asDriver(onErrorRecover: { _ in return Driver.empty() })
     }
 }
