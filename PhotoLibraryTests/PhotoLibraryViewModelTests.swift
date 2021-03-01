@@ -104,7 +104,6 @@ private final class PhotoLibraryServiceMock: PhotoLibraryServiceProtocol {
     let photoListResult: ResultType
     
     var getPhotoListRequestCalled = PublishSubject<Void>()
-    var postCalled = PublishSubject<Void>()
     
     init(photoListResult: ResultType) {
         self.photoListResult = photoListResult
@@ -126,14 +125,6 @@ private final class PhotoLibraryServiceMock: PhotoLibraryServiceProtocol {
         case .error:
             return Observable.error(APIError.generic)
         }
-    }
-    
-    func getPhotosURL(photoId: String) -> Observable<String> {
-        return .empty()
-    }
-    
-    func downloadImage(url: String) -> Observable<UIImage> {
-        return .empty()
     }
 }
 

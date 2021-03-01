@@ -21,7 +21,7 @@ class PhotoLibraryCollectionViewCellViewModel: PhotoLibraryCollectionViewCellVie
     let isLoading: Driver<Bool>
     let downloadedImage: Driver<UIImage>
     
-    init(service: PhotoLibraryServiceProtocol = PhotoLibraryService(), photoId: String) {
+    init(service: PhotoLibraryCollectionViewCellServiceProtocol = PhotoLibraryCollectionViewCellService(), photoId: String) {
         
         let _isLoading = PublishSubject<Bool>()
         isLoading = _isLoading.asDriver(onErrorRecover: { _ in return Driver.empty() })
