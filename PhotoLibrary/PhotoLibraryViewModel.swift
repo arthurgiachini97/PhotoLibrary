@@ -64,7 +64,7 @@ class PhotoLibraryViewModel: PhotoLibraryViewModelProtocol {
         
         let photosIds = list.map { list -> [String] in
             var photoIdsList = [String]()
-            for i in 0...15 {
+            for i in 0..<list.photos.photo.count {
                 photoIdsList.append(list.photos.photo[i].id)
             }
             return photoIdsList

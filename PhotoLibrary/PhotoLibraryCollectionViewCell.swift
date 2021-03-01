@@ -54,7 +54,10 @@ class PhotoLibraryCollectionViewCell: UICollectionViewCell {
                 photoImageView.isHidden = true
                 loadingIndicator.startAnimating()
             })
-            .drive(with: loadingIndicator)
+            .drive(onNext: { [loadingIndicator, photoImageView] _ in
+                photoImageView.isHidden = false
+                loadingIndicator.stopAnimating()
+            })
             .disposed(by: disposeBag)
     }
 

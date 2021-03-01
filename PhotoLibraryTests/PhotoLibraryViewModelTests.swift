@@ -27,12 +27,12 @@ class PhotoLibraryViewModelTests: QuickSpec {
         start()
     }
     
-    private func setup() {
+    private func setup(photoListResult: ResultType = .success) {
         
         scheduler = TestScheduler(initialClock: 0)
         disposeBag = DisposeBag()
         
-        service = PhotoLibraryServiceMock()
+        service = PhotoLibraryServiceMock(photoListResult: photoListResult)
         sut = PhotoLibraryViewModel(service: service)
     }
     
@@ -43,7 +43,7 @@ class PhotoLibraryViewModelTests: QuickSpec {
             when("when the search button is tapped") {
                 
                 beforeEach {
-                    self.setup()
+                    self.setup(photoListResult: .success)
                     self.scheduler.createHotObservable([.next(300, "Kitten")])
                         .bind(to: self.sut.tags)
                         .disposed(by: self.disposeBag)
@@ -66,16 +66,16 @@ class PhotoLibraryViewModelTests: QuickSpec {
                 given("with error") {
                     
                     beforeEach {
-//                        self.setup(basicDataResult: .failure(error: SDSessionError(.generic)))
-//                        self.scheduler.createHotObservable([.next(300, ())])
-//                            .bind(to: self.sut.loadData)
-//                            .disposed(by: self.disposeBag)
-//                        self.sut.statesList.subscribe().disposed(by: self.disposeBag)
+                        self.setup(photoListResult: .error)
+                   self.scheduler.createHotObservable([.next(300, "Kitten")])
+                       .bind(to: self.sut.tags)
+                       .disposed(by: self.disposeBag)
+                   self.sut.cellViewModels.drive().disposed(by: self.disposeBag)
                     }
                     
                     then("then the error must be generated") {
-//                        let observer = self.scheduler.start({ self.sut.state })
-//                        expect(observer.events).to(equal([.next(300, .loading), .next(300, .error(SDSessionError(.generic)))]))
+                        let observer = self.scheduler.start({ self.sut.state })
+                        expect(observer.events).to(equal([.next(300, .loading), .next(300, .error)]))
                     }
                 }
                 
@@ -90,8 +90,8 @@ class PhotoLibraryViewModelTests: QuickSpec {
                     }
                     
                     then("then the data must be showed") {
-//                        let observer = self.scheduler.start({ self.sut.state })
-//                        expect(observer.events).to(equal([.next(300, .loading), .next(300, .data), .completed(300)]))
+                        let observer = self.scheduler.start({ self.sut.state })
+                        expect(observer.events).to(equal([.next(300, .loading), .next(300, .data)]))
                     }
                 }
             }
@@ -101,12 +101,31 @@ class PhotoLibraryViewModelTests: QuickSpec {
 
 private final class PhotoLibraryServiceMock: PhotoLibraryServiceProtocol {
     
+    let photoListResult: ResultType
+    
     var getPhotoListRequestCalled = PublishSubject<Void>()
     var postCalled = PublishSubject<Void>()
     
+    init(photoListResult: ResultType) {
+        self.photoListResult = photoListResult
+    }
+    
     func getPhotoList(tags: String) -> Observable<PhotoList> {
         getPhotoListRequestCalled.onNext(())
-        return .empty()
+        
+        switch photoListResult {
+            
+        case .success:
+            return Observable.just(PhotoList(photos: PhotoList.PhotoDetails(photo: [
+                PhotoLibrary.PhotoList.PhotoId(id: "50992137593"),
+                PhotoLibrary.PhotoList.PhotoId(id: "50990912363"),
+                PhotoLibrary.PhotoList.PhotoId(id: "50990939558"),
+                PhotoLibrary.PhotoList.PhotoId(id: "50990939068"),
+                PhotoLibrary.PhotoList.PhotoId(id: "50991608256")
+            ])))
+        case .error:
+            return Observable.error(APIError.generic)
+        }
     }
     
     func getPhotosURL(photoId: String) -> Observable<String> {
@@ -116,6 +135,14 @@ private final class PhotoLibraryServiceMock: PhotoLibraryServiceProtocol {
     func downloadImage(url: String) -> Observable<UIImage> {
         return .empty()
     }
+}
+
+enum ResultType {
+    case success, error
+}
+
+enum APIError: Error {
+    case generic
 }
 
 func given(_ description: String, flags: FilterFlags = [:], closure: @escaping () -> Void) {
