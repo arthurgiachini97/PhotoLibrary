@@ -28,6 +28,14 @@ class PhotoLibraryCollectionViewCell: UICollectionViewCell {
     
     private let disposeBag = DisposeBag()
     
+    private let errorLabel: UILabel = {
+        let errorLabel = UILabel()
+        errorLabel.translatesAutoresizingMaskIntoConstraints = false
+        errorLabel.font = errorLabel.font.withSize(12)
+        errorLabel.numberOfLines = 0
+        return errorLabel
+    }()
+    
     // MARK: Initializers
     
     override init(frame: CGRect) {
@@ -49,16 +57,40 @@ class PhotoLibraryCollectionViewCell: UICollectionViewCell {
         })
         .disposed(by: disposeBag)
         
-        viewModel.isLoading
+        viewModel.errorText.drive(onNext: { [errorLabel] errorText in
+            errorLabel.text = errorText
+        })
+            .disposed(by: disposeBag)
+        
+        viewModel.state
             .do(onSubscribe: { [loadingIndicator, photoImageView] in
                 photoImageView.isHidden = true
                 loadingIndicator.startAnimating()
             })
-            .drive(onNext: { [loadingIndicator, photoImageView] _ in
-                photoImageView.isHidden = false
-                loadingIndicator.stopAnimating()
+            .drive(onNext: { [photoImageView, loadingIndicator, errorLabel] state in
+                switch state {
+                case .data:
+                    photoImageView.isHidden = false
+                    loadingIndicator.stopAnimating()
+                    errorLabel.isHidden = true
+                case .loading:
+                    photoImageView.isHidden = true
+                    loadingIndicator.startAnimating()
+                    errorLabel.isHidden = true
+                case .error:
+                    photoImageView.isHidden = false
+                    loadingIndicator.stopAnimating()
+                    errorLabel.isHidden = false
+                }
             })
+            
+//            .drive(onNext: { [loadingIndicator, photoImageView] _ in
+//                photoImageView.isHidden = false
+//                loadingIndicator.stopAnimating()
+//            })
             .disposed(by: disposeBag)
+        
+        viewModel.loadData.onNext(())
     }
 
     // MARK: Private functions
@@ -68,6 +100,7 @@ class PhotoLibraryCollectionViewCell: UICollectionViewCell {
         layer.cornerRadius = 7.5
         addSubview(photoImageView)
         addSubview(loadingIndicator)
+        addSubview(errorLabel)
         
         NSLayoutConstraint.activate([
             photoImageView.topAnchor.constraint(equalTo: topAnchor),
@@ -76,7 +109,10 @@ class PhotoLibraryCollectionViewCell: UICollectionViewCell {
             photoImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
             loadingIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
-            loadingIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
+            loadingIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
+            errorLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            errorLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 }

@@ -28,6 +28,7 @@ class PhotoLibraryCollectionViewCellService: PhotoLibraryCollectionViewCellServi
                     for size in data.sizes.size {
                         if size.label == "Large Square" {
                             observer.onNext(size.source)
+                            print(size.source)
                         }
                     }
                     break

@@ -11,35 +11,51 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol PhotoLibraryCollectionViewCellViewModelProtocol {
-    var isLoading: Driver<Bool> { get }
-    var downloadedImage: Driver<UIImage> { get }
+// MARK: - Enum
+
+enum PhotoLibraryCollectionViewCellViewModelState {
+    case data, loading, error
 }
+
+// MARK: - Protocol
+
+protocol PhotoLibraryCollectionViewCellViewModelProtocol {
+    var loadData: PublishSubject<Void> { get }
+    var state: Driver<PhotoLibraryCollectionViewCellViewModelState> { get }
+    var downloadedImage: Driver<UIImage> { get }
+    var errorText: Driver<String> { get }
+}
+
+// MARK: - Class
 
 class PhotoLibraryCollectionViewCellViewModel: PhotoLibraryCollectionViewCellViewModelProtocol {
     
-    let isLoading: Driver<Bool>
+    let loadData = PublishSubject<Void>()
+    let state: Driver<PhotoLibraryCollectionViewCellViewModelState>
     let downloadedImage: Driver<UIImage>
+    let errorText = Driver<String>.just("Could not load this photo.")
     
     init(service: PhotoLibraryCollectionViewCellServiceProtocol = PhotoLibraryCollectionViewCellService(), photoId: String) {
         
-        let _isLoading = PublishSubject<Bool>()
-        isLoading = _isLoading.asDriver(onErrorRecover: { _ in return Driver.empty() })
+        let _state = PublishSubject<PhotoLibraryCollectionViewCellViewModelState>()
+        state = _state.asDriver(onErrorRecover: { _ in return Driver.empty() })
         
-        let url = service
-            .getPhotosURL(photoId: photoId)
-            .do(onSubscribe: {
-                _isLoading.onNext(true)
-            })
+        let url = loadData.flatMap { _ -> Driver<String> in
+            service
+                .getPhotosURL(photoId: photoId)
+                .do(onError: { _ in _state.onNext(.error) },
+                    onSubscribe: { _state.onNext(.loading) })
+            .asDriver(onErrorRecover: { _ in return Driver.empty() })
+        }
         .asDriver(onErrorRecover: { _ in return Driver.empty() })
         
         downloadedImage = url
             .flatMap({ (url) -> Driver<UIImage> in
                 service
                     .downloadImage(url: url)
+                    .do(onNext: { _ in _state.onNext(.data) })
                     .asDriver(onErrorRecover: { _ in return Driver.empty() })
             })
-            .do(onNext: { (_) in _isLoading.onNext(false) })
             .asDriver(onErrorRecover: { _ in return Driver.empty() })
     }
 }

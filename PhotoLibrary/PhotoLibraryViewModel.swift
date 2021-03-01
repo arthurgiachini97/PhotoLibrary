@@ -62,7 +62,15 @@ class PhotoLibraryViewModel: PhotoLibraryViewModelProtocol {
         }
         .asDriver(onErrorRecover: { _ in return Driver.empty() })
         
-        let photosIds = list.map { list -> [String] in
+        let partialPhotosIds = list.filter({ $0.photos.photo.count > 16 }).map { list -> [String] in
+            var photoIdsList = [String]()
+            for i in 0..<16 {
+                photoIdsList.append(list.photos.photo[i].id)
+            }
+            return photoIdsList
+        }
+        
+        let photosIds = list.filter({ $0.photos.photo.count < 16 }).map { list -> [String] in
             var photoIdsList = [String]()
             for i in 0..<list.photos.photo.count {
                 photoIdsList.append(list.photos.photo[i].id)
@@ -70,7 +78,7 @@ class PhotoLibraryViewModel: PhotoLibraryViewModelProtocol {
             return photoIdsList
         }
         
-        cellViewModels = photosIds.map { photoIds -> [PhotoLibraryCollectionViewCellViewModelProtocol] in
+        cellViewModels = Driver.merge(partialPhotosIds, photosIds).map { photoIds -> [PhotoLibraryCollectionViewCellViewModelProtocol] in
             var array = [PhotoLibraryCollectionViewCellViewModelProtocol]()
             for photoId in photoIds {
                 array.append(PhotoLibraryCollectionViewCellViewModel(photoId: photoId))
