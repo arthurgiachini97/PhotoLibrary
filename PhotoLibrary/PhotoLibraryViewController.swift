@@ -59,6 +59,11 @@ class PhotoLibraryViewController: UIViewController {
         })
             .disposed(by: disposeBag)
         
+        viewModel.emptyStateLabel.drive(onNext: { [customView] text in
+            customView.emptyStateLabel.text = text
+        })
+            .disposed(by: disposeBag)
+        
         viewModel.cellViewModels
             .drive(customView.collectionView.rx.items(cellIdentifier: PhotoLibraryCollectionViewCell.description(), cellType: PhotoLibraryCollectionViewCell.self)) { (row, viewModel, cell) in
                 cell.configure(viewModel: viewModel)
