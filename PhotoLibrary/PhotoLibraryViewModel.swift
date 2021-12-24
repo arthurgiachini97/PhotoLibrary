@@ -22,6 +22,7 @@ protocol PhotoLibraryViewModelProtocol {
     var loadData: PublishSubject<Void> { get }
     var tags: PublishSubject<String?> { get }
     var title: Driver<String> { get }
+    var emptyStateLabel: Driver<String> { get }
     var cellViewModels: Driver<[PhotoLibraryCollectionViewCellViewModelProtocol]> { get }
     var state: Driver<PhotoLibraryViewModelState> { get }
 }
@@ -35,6 +36,8 @@ class PhotoLibraryViewModel: PhotoLibraryViewModelProtocol {
     var tags = PublishSubject<String?>()
     
     let title = Driver.just("Photo Library")
+    
+    let emptyStateLabel = Driver.just("Enter any tag(s) and search for photos.")
     
     let cellViewModels: Driver<[PhotoLibraryCollectionViewCellViewModelProtocol]>
     

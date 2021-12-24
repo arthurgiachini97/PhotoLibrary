@@ -35,7 +35,7 @@ class PhotoLibraryCollectionViewCellService: PhotoLibraryCollectionViewCellServi
     func downloadImage(urlString: String) -> Observable<UIImage> {
         
         return Observable<UIImage>.create { (observer) -> Disposable in
-        
+            
             if let dict = (UserDefaults.standard.object(forKey: "ImageCache") as? [String: String]) {
                 if let path = dict[urlString] {
                     if let data = try? Data(contentsOf: URL(fileURLWithPath: path)) {

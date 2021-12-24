@@ -43,6 +43,16 @@ final class PhotoLibraryView: UIView {
         return collectionView
     }()
     
+    let emptyStateLabel: UILabel = {
+        let emptyStateLabel = UILabel()
+        emptyStateLabel.translatesAutoresizingMaskIntoConstraints = false
+        emptyStateLabel.font = emptyStateLabel.font.withSize(26)
+        emptyStateLabel.numberOfLines = 0
+        emptyStateLabel.textAlignment = .center
+        emptyStateLabel.textColor = .gray
+        return emptyStateLabel
+    }()
+    
     let errorView = ErrorView()
     
     override init(frame: CGRect) {
@@ -61,10 +71,15 @@ final class PhotoLibraryView: UIView {
         addSubview(collectionView)
         addSubview(errorView)
         addSubview(loadingIndicator)
+        addSubview(emptyStateLabel)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            emptyStateLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            emptyStateLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            emptyStateLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: UIScreen.main.bounds.width * 0.1),
+            
             searchBar.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             searchBar.leadingAnchor.constraint(equalTo: leadingAnchor),
             searchBar.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -97,6 +112,7 @@ final class PhotoLibraryView: UIView {
             loadingIndicator.startAnimating()
             collectionView.isHidden = isLoading
             errorView.isHidden = isLoading
+            emptyStateLabel.isHidden = isLoading
         } else {
             loadingIndicator.isHidden = isLoading
             loadingIndicator.stopAnimating()
