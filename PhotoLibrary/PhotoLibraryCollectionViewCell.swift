@@ -83,11 +83,6 @@ class PhotoLibraryCollectionViewCell: UICollectionViewCell {
                     errorLabel.isHidden = false
                 }
             })
-            
-//            .drive(onNext: { [loadingIndicator, photoImageView] _ in
-//                photoImageView.isHidden = false
-//                loadingIndicator.stopAnimating()
-//            })
             .disposed(by: disposeBag)
         
         viewModel.loadData.onNext(())

@@ -40,7 +40,7 @@ class PhotoLibraryCollectionViewCellViewModel: PhotoLibraryCollectionViewCellVie
         let _state = PublishSubject<PhotoLibraryCollectionViewCellViewModelState>()
         state = _state.asDriver(onErrorRecover: { _ in return Driver.empty() })
         
-        let url = loadData.flatMap { _ -> Driver<String> in
+        let urlString = loadData.flatMap { _ -> Driver<String> in
             service
                 .getPhotosURL(photoId: photoId)
                 .do(onError: { _ in _state.onNext(.error) },
@@ -49,10 +49,10 @@ class PhotoLibraryCollectionViewCellViewModel: PhotoLibraryCollectionViewCellVie
         }
         .asDriver(onErrorRecover: { _ in return Driver.empty() })
         
-        downloadedImage = url
-            .flatMap({ (url) -> Driver<UIImage> in
+        downloadedImage = urlString
+            .flatMap({ (urlString) -> Driver<UIImage> in
                 service
-                    .downloadImage(url: url)
+                    .downloadImage(urlString: urlString)
                     .do(onNext: { _ in _state.onNext(.data) })
                     .asDriver(onErrorRecover: { _ in return Driver.empty() })
             })

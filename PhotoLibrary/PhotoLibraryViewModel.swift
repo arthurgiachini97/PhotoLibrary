@@ -62,28 +62,16 @@ class PhotoLibraryViewModel: PhotoLibraryViewModelProtocol {
         }
         .asDriver(onErrorRecover: { _ in return Driver.empty() })
         
-        let partialPhotosIds = list.filter({ $0.photos.photo.count > 16 }).map { list -> [String] in
-            var photoIdsList = [String]()
-            for i in 0..<16 {
-                photoIdsList.append(list.photos.photo[i].id)
-            }
-            return photoIdsList
+        let partialPhotosIds = list.filter({ $0.photos.photo.count > 16 }).map {
+            $0.photos.photo.enumerated().filter{ (index, _) in index < 16 }.map { $1.id }
         }
         
-        let photosIds = list.filter({ $0.photos.photo.count < 16 }).map { list -> [String] in
-            var photoIdsList = [String]()
-            for i in 0..<list.photos.photo.count {
-                photoIdsList.append(list.photos.photo[i].id)
-            }
-            return photoIdsList
+        let photosIds = list.filter({ $0.photos.photo.count < 16 }).map {
+            $0.photos.photo.enumerated().filter{ (index, _) in index < 16 }.map { $1.id }
         }
         
-        cellViewModels = Driver.merge(partialPhotosIds, photosIds).map { photoIds -> [PhotoLibraryCollectionViewCellViewModelProtocol] in
-            var array = [PhotoLibraryCollectionViewCellViewModelProtocol]()
-            for photoId in photoIds {
-                array.append(PhotoLibraryCollectionViewCellViewModel(photoId: photoId))
-            }
-            return array
+        cellViewModels = Driver.merge(partialPhotosIds, photosIds).map {
+            $0.map { PhotoLibraryCollectionViewCellViewModel(photoId: $0) }
         }
         .asDriver(onErrorRecover: { _ in return Driver.empty() })
     }

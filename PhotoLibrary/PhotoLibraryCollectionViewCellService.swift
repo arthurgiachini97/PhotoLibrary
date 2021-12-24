@@ -11,11 +11,64 @@ import RxSwift
 import UIKit
 
 protocol PhotoLibraryCollectionViewCellServiceProtocol {
+    func storeImage(urlString: String, img: UIImage)
+    func downloadImage(urlString: String) -> Observable<UIImage>
     func getPhotosURL(photoId: String) -> Observable<String>
-    func downloadImage(url: String) -> Observable<UIImage>
 }
 
 class PhotoLibraryCollectionViewCellService: PhotoLibraryCollectionViewCellServiceProtocol {
+    
+    func storeImage(urlString: String, img: UIImage) {
+        let path = NSTemporaryDirectory().appending(UUID().uuidString)
+        let url = URL(fileURLWithPath: path)
+        
+        let data = img.jpegData(compressionQuality: 0.5)
+        try? data?.write(to: url)
+        
+        var dict = (UserDefaults.standard.object(forKey: "ImageCache") as? [String: String]) ?? [String: String]()
+        if dict[urlString] == nil {
+            dict[urlString] = path
+            UserDefaults.standard.set(dict, forKey: "ImageCache")
+        }
+    }
+    
+    func downloadImage(urlString: String) -> Observable<UIImage> {
+        
+        return Observable<UIImage>.create { (observer) -> Disposable in
+        
+            if let dict = (UserDefaults.standard.object(forKey: "ImageCache") as? [String: String]) {
+                if let path = dict[urlString] {
+                    if let data = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                        if let img = UIImage(data: data) {
+                            observer.onNext(img)
+                            return Disposables.create {
+                                AF.cancelAllRequests()
+                            }
+                        }
+                    }
+                }
+            }
+            
+            AF.download(urlString).responseData { data in
+                switch data.result {
+                case let .success(data):
+                    if let image = UIImage(data: data) {
+                        self.storeImage(urlString: urlString, img: image)
+                        observer.onNext(image)
+                    }
+                    break
+                case let .failure(error):
+                    observer.onError(error)
+                    break
+                }
+            }
+            
+            return Disposables.create {
+                AF.cancelAllRequests()
+            }
+        }
+    }
+    
     func getPhotosURL(photoId: String) -> Observable<String> {
         
         return Observable<String>.create { (observer) -> Disposable in
@@ -43,25 +96,5 @@ class PhotoLibraryCollectionViewCellService: PhotoLibraryCollectionViewCellServi
             }
         }
         
-    }
-    
-    func downloadImage(url: String) -> Observable<UIImage> {
-        return Observable<UIImage>.create { (observer) -> Disposable in
-            
-            AF.download(url).responseData { (data) in
-                switch data.result {
-                case let .success(data):
-                    observer.onNext(UIImage(data: data)!)
-                    break
-                case let .failure(error):
-                    observer.onError(error)
-                    break
-                }
-            }
-            
-            return Disposables.create {
-                AF.cancelAllRequests()
-            }
-        }
     }
 }
